@@ -20,8 +20,8 @@ jobs:
       run: |
         ORIGIN_HOST=${{ secrets.DATABRICKS_ORIGIN_HOST }}
         ORIGIN_TOKEN=${{ secrets.DATABRICKS_ORIGIN_TOKEN }}
-        NOTEBOOK_BASE="/Workspace/Users/alejandromendezpaulino@gmail.com/ETL-APPLE-SALES/process"
-        NOTEBOOKS=("Ingest Sales" "Ingest warranty" "Ingest Catalogs" "Transform Sales" "Transform Warranty" "Load Sales" "Load Warranty")  
+        NOTEBOOK_BASE="/Workspace/Users/alejandromendezpaulino@gmail.com/process"
+        NOTEBOOKS=("Ingest Catalogs")  
 
         mkdir -p notebooks_to_deploy
 
