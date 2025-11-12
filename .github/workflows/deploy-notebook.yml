@@ -21,7 +21,7 @@ jobs:
         ORIGIN_HOST=${{ secrets.DATABRICKS_ORIGIN_HOST }}
         ORIGIN_TOKEN=${{ secrets.DATABRICKS_ORIGIN_TOKEN }}
         NOTEBOOK_BASE="/Workspace/Users/alejandromendezpaulino@gmail.com/process"
-        NOTEBOOKS=("Ingest Catalogs")  
+        NOTEBOOKS=("ingest_catalogs")  
 
         mkdir -p notebooks_to_deploy
 
