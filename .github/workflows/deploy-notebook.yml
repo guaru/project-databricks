@@ -1,0 +1,69 @@
+name: Deploy ETL Apple Sale
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v3
+
+    - name: Install jq & curl
+      run: sudo apt-get update && sudo apt-get install -y jq curl
+
+    - name: Export multiple notebooks (raw)
+      run: |
+        ORIGIN_HOST=${{ secrets.DATABRICKS_ORIGIN_HOST }}
+        ORIGIN_TOKEN=${{ secrets.DATABRICKS_ORIGIN_TOKEN }}
+        NOTEBOOK_BASE="/Workspace/Users/alejandromendezpaulino_gmail.com#ext#@alejandromendezpaulinogmail.onmicrosoft.com/project-databricks/process"
+        NOTEBOOKS=("Ingest Sales" "Ingest warranty" "Ingest Catalogs" "Transform Sales" "Transform Warranty" "Load Sales" "Load Warranty")  
+
+        mkdir -p notebooks_to_deploy
+
+        for nb in "${NOTEBOOKS[@]}"; do
+          echo "Exportando $nb en modo raw..."
+          curl -s -X GET \
+            -H "Authorization: Bearer $ORIGIN_TOKEN" \
+            "$ORIGIN_HOST/api/2.0/workspace/export?path=$NOTEBOOK_BASE/$nb&format=SOURCE&direct_download=true" \
+            --output "notebooks_to_deploy/$nb.py"
+        done
+
+    - name: Deploy notebooks to Destination Workspace
+      run: |
+        DEST_HOST=${{ secrets.DATABRICKS_DEST_HOST }}
+        DEST_TOKEN=${{ secrets.DATABRICKS_DEST_TOKEN }}
+        DEST_BASE="/produccion"
+
+        for file in notebooks_to_deploy/*.py; do
+          name=$(basename "$file" .py)
+          dest_path="$DEST_BASE/$name"
+
+          echo "Creando carpeta $DEST_BASE si no existe..."
+          curl -s -X POST \
+            -H "Authorization: Bearer $DEST_TOKEN" \
+            -H "Content-Type: application/json" \
+            -d "{\"path\":\"$DEST_BASE\"}" \
+            "$DEST_HOST/api/2.0/workspace/mkdirs"
+
+          echo "Importando $file → $dest_path"
+          curl -s -X POST \
+            -H "Authorization: Bearer $DEST_TOKEN" \
+            -H "Content-Type: multipart/form-data" \
+            -F "path=$dest_path" \
+            -F "format=SOURCE" \
+            -F "language=PYTHON" \
+            -F "overwrite=true" \
+            -F "content=@$file" \
+            "$DEST_HOST/api/2.0/workspace/import"
+        done
+
+    - name: Clean up
+      run: rm -rf notebooks_to_deploy
+
+    - name: Done
+      run: echo "All notebooks deployed with raw content!"
