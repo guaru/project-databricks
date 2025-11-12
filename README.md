@@ -1,6 +1,6 @@
 <div align="center">
 
-# ☕ Apple Store Sales and Warranty ETL Pipeline
+# 🍏 Apple Store Sales and Warranty ETL Pipeline
 ### Arquitectura Medallion en Azure Databricks
 
 [![Databricks](https://img.shields.io/badge/Databricks-FF3621?style=for-the-badge&logo=databricks&logoColor=white)](https://databricks.com/)
@@ -10,7 +10,7 @@
 [![Power BI](https://img.shields.io/badge/Power_BI-F2C811?style=for-the-badge&logo=power-bi&logoColor=black)](https://powerbi.microsoft.com/)
 [![CI/CD](https://img.shields.io/badge/CI%2FCD-GitHub_Actions-2088FF?style=for-the-badge&logo=github-actions&logoColor=white)](https://github.com/features/actions)
 
-*Pipeline automatizado de datos para análisis de ventas y garantias de Apple con arquitectura de tres capas y despliegue continuo*
+*Pipeline automatizado de datos para análisis de ventas y garantias de Apple Stores con arquitectura de tres capas y despliegue continuo*
 
 </div>
 
