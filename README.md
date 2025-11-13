@@ -339,7 +339,9 @@ Workflow: Deploy ETL Apple Sales And Warranty
 ⏰ Schedule: Diario 8:00 AM (Lima)
 ⏱️ Timeout total: 4 horas
  🔒 Max concurrent runs: 1
- ⏰ Notificaciones: isc.ventura@gmail.com
+⏰ Notificaciones: 
+      success: isc.ventura@gmail.com
+      failed:  isc.ventura@gmail.com
 ```
 
 ---
@@ -413,7 +415,7 @@ catalog_prod
 
 **Workflows**:
 - Ir a **Workflows** en el menú lateral
-- Buscar `CoffeeShopWFDeploy`
+- Buscar `ETL_PROD_APPLE_SALES`
 - Ver historial de ejecuciones
 
 **Logs por Tarea**:
@@ -428,41 +430,6 @@ catalog_prod
 - Click en ejecución específica para detalles
 - Revisar logs de cada step
 
-### Notificaciones
-
-- 📧 **Email**: Configurado para `lchaponant@gmail.com` en caso de fallo
-- 🔔 **GitHub**: Notificaciones en el repositorio
-
----
-
-## 🐛 Troubleshooting
-
-<details>
-<summary><b>Error: Cluster not found</b></summary>
-
-**Solución**: Verificar que el cluster `CLUSTER COFFEE SHOP` esté activo en Databricks.
-
-```bash
-# Verificar nombre exacto del cluster en Databricks
-```
-</details>
-
-<details>
-<summary><b>Error: Authentication failed</b></summary>
-
-**Solución**: Regenerar Personal Access Token y actualizar GitHub Secrets.
-</details>
-
-<details>
-<summary><b>Error: Storage path not found</b></summary>
-
-**Solución**: Verificar que el ADLS Gen2 esté montado correctamente:
-
-```python
-storage_path = "abfss://coffeeshop@adlsdevluis25.dfs.core.windows.net"
-```
-</details>
-
 ---
 
 ## 👤 Autor
@@ -471,9 +438,9 @@ storage_path = "abfss://coffeeshop@adlsdevluis25.dfs.core.windows.net"
 
 ### Alejandro de Jesus Ventura Martinez
 
-[![LinkedIn](https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/luis-chaponan-tejada/)
-[![GitHub](https://img.shields.io/badge/GitHub-100000?style=for-the-badge&logo=github&logoColor=white)](https://github.com/ltechdev)
-[![Email](https://img.shields.io/badge/Email-D14836?style=for-the-badge&logo=gmail&logoColor=white)](mailto:lchaponant@gmail.com)
+[![LinkedIn](https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/alejandro-ventura-martinez-049009142/)
+[![GitHub](https://img.shields.io/badge/GitHub-100000?style=for-the-badge&logo=github&logoColor=white)](https://github.com/guaru)
+[![Email](https://img.shields.io/badge/Email-D14836?style=for-the-badge&logo=gmail&logoColor=white)](mailto:isc.ventura@gmail.com)
 
 **Data Engineering** | **Azure Databricks** | **Delta Lake** | **CI/CD**
 
