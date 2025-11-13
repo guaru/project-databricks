@@ -57,7 +57,12 @@ Pipeline ETL enterprise-grade que transforma datos crudos de ventas y garantias 
 #### 🥉 Bronze Layer
 **Propósito**: Zona de aterrizaje
 
-**Tabla**: `VENTA_CAFE`
+**Tablas**: 
+- `category` 
+- `products` 
+- `warranty`
+- `sales` 
+- `stores`
 
 **Características**:
 - ✅ Datos tal como vienen de origen
@@ -80,7 +85,6 @@ Pipeline ETL enterprise-grade que transforma datos crudos de ventas y garantias 
 **Características**:
 - ✅ Star Schema
 - ✅ Datos normalizados
-
 - ✅ Validaciones completas
 
 </td>
