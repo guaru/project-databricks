@@ -77,10 +77,11 @@ Pipeline ETL enterprise-grade que transforma datos crudos de ventas y garantias 
 **Propósito**: Modelo dimensional
 
 **Tablas**:
-- `HECHO_VENTAS`
-- `DIM_CAFE`
-- `DIM_PAGO`
-- `DIM_FECHA`
+- `category_sales`
+- `product_sales`
+- `store_sales`
+- `store_warranty_status`
+- `waranty_products`
 
 **Características**:
 - ✅ Star Schema
@@ -94,10 +95,11 @@ Pipeline ETL enterprise-grade que transforma datos crudos de ventas y garantias 
 **Propósito**: Analytics-ready
 
 **Tablas**:
-- Ventas diarias
-- Top productos
-- Análisis temporal
-- KPIs ejecutivos
+- kpi_category_sales        : Monto total en ventas agrupado por categoría y año
+- kpi_product_sales         : Monto total en ventas agrupado por producto y año
+- kpi_store_sales           : Monto total en ventas agrupado por tienda y año
+- kpi_store_warranty_status : Total de reclamos por tienda en los diferentes estatus pivot
+- kpi_product_warranty      : Productos con mayor reclamos post venta (garantía)
 
 **Características**:
 - ✅ Pre-agregados
@@ -114,21 +116,27 @@ Pipeline ETL enterprise-grade que transforma datos crudos de ventas y garantias 
 ## 📁 Estructura del Proyecto
 
 ```
-coffee-shop-etl/
+etl-apple/
 │
 ├── 📂 .github/
 │   └── 📂 workflows/
-│       └── 📄 databricks-deploy.yml    # Pipeline CI/CD
-│
-├── 📂 proceso/
-│   ├── 📄 1-Ddls-Medallion.sql         # Creación de esquema
-│   ├── 🐍 2-Ingest-Coffee-Shop-Data.py # Bronze Layer
-│   ├── 🐍 3-Transform.py                # Silver Layer
-│   └── 🐍 4-Load.py                     # Gold Layer
-│
+│       └── 📄 deploy-certification.yml    # Pipeline CI/CD deploy a certification workspace databricks
+├── 📂 process/
+│   ├── 🐍 ingest_catalogs.py           # Bronze layer
+│   ├── 🐍 ingest_sales.py              # Bronze Layer
+│   ├── 🐍 ingest_warranty.py           # Bronze Layer
+│   ├── 🐍 transform_sales.py           # Silver Layer
+│   ├── 🐍 transform_warranty.py        # Silver Layer
+│   └── 🐍 load_sales.py                # Gold Layer
+│   └── 🐍 load_warranty.py             # Gold Layer
+├── 📂 security/
+|   ├── 🐍 Enviroment preparation.py    # Create Schema, Tables, External location
+├── 📂 security/
+|   ├── 🐍 Permissions.py               # Sql Grant
 └── 📄 README.md
 ```
-
+##  ETL
+![Texto descriptivo](CICD_ETL_APPLE.png)
 ---
 
 ## 🛠️ Tecnologías
@@ -164,8 +172,8 @@ coffee-shop-etl/
 ### 1️⃣ Clonar el Repositorio
 
 ```bash
-git clone https://github.com/tu-usuario/coffee-shop-etl.git
-cd coffee-shop-etl
+git clone https://github.com/guaru/project-databricks.git
+cd project-databricks
 ```
 
 ### 2️⃣ Configurar Databricks Token
@@ -190,7 +198,7 @@ En tu repositorio: **Settings** → **Secrets and variables** → **Actions**
 ### 4️⃣ Verificar Storage Configuration
 
 ```python
-storage_path = "abfss://coffeeshop@adlsdevluis25.dfs.core.windows.net"
+storage_path = "abfss://raw@adlsprojectsmartdata.dfs.core.windows.net"
 ```
 
 <div align="center">
@@ -212,9 +220,9 @@ git push origin master
 ```
 
 **GitHub Actions ejecutará**:
-- 📤 Deploy de notebooks a `/prod/coffee_shop`
-- 🔧 Creación del workflow `CoffeeShopWFDeploy`
-- ▶️ Ejecución completa: DDL → Bronze → Silver → Gold
+- 📤 Deploy de notebooks a `/Production/ETL-APPLE`
+- 🔧 Creación del workflow `WF_PROD_ETL_APPLE_SALES`
+- ▶️ Ejecución completa:  Bronze → Silver → Gold
 - 📧 Notificaciones de resultados
 
 ### 🖱️ Despliegue Manual desde GitHub
@@ -227,13 +235,17 @@ git push origin master
 
 ### 🔧 Ejecución Local en Databricks
 
-Navegar a `/prod/coffee_shop` y ejecutar en orden:
+Navegar a `/Production/ETL-APPLE` y ejecutar en orden:
 
 ```
-1️⃣ 1-Ddls-Medallion.sql         → Crear esquema
-2️⃣ 2-Ingest-Coffee-Shop-Data.py → Bronze Layer
-3️⃣ 3-Transform.py                → Silver Layer
-4️⃣ 4-Load.py                     → Gold Layer
+- Enviroment preparation.py         → Crear esquema
+- ingest_catalogs.py                → Bronze Layer
+- ingest_sales.py                   → Bronze Layer
+- ingest_warranty.py                → Bronze Layer
+- transform_sales.py                → Silver Layer
+- transform_warranty.py             → Silver Layer
+- load_sales.py                     → Gold Layer
+- load_warranty.py                  → Gold Layer
 ```
 
 ---
