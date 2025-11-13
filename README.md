@@ -135,8 +135,7 @@ etl-apple/
 |   ├── 🐍 Permissions.py               # Sql Grant
 └── 📄 README.md
 ```
-##  ETL
-![Texto descriptivo](CICD_ETL_APPLE.png)
+
 ---
 
 ## 🛠️ Tecnologías
@@ -160,7 +159,7 @@ etl-apple/
 
 - ☁️ Cuenta de Azure con acceso a Databricks
 - 💻 Workspace de Databricks configurado
-- 🖥️ Cluster activo (nombre: `CLUSTER COFFEE SHOP`)
+- 🖥️ Cluster activo (nombre: `Cluster1`)
 - 🐙 Cuenta de GitHub con permisos de administrador
 - 📦 Azure Data Lake Storage Gen2 configurado
 - 📊 Power BI Desktop (opcional para visualización)
@@ -228,9 +227,9 @@ git push origin master
 ### 🖱️ Despliegue Manual desde GitHub
 
 1. Ir al tab **Actions** en GitHub
-2. Seleccionar **Coffee Shop ETL - Databricks Deploy**
+2. Seleccionar **Deploy ETL Apple Sales And Warranty**
 3. Click en **Run workflow**
-4. Seleccionar rama `master`
+4. Seleccionar rama `main`
 5. Click en **Run workflow**
 
 ### 🔧 Ejecución Local en Databricks
@@ -254,14 +253,6 @@ Navegar a `/Production/ETL-APPLE` y ejecutar en orden:
 
 ### 🥈 Silver Layer - Star Schema
 
-```
-                    DIM_FECHA
-                        |
-                        |
-DIM_CAFE -------- HECHO_VENTAS -------- DIM_PAGO
-                        |
-                   (Fact Table)
-```
 
 #### 🎯 HECHO_VENTAS (Fact Table)
 
@@ -331,8 +322,8 @@ DIM_CAFE -------- HECHO_VENTAS -------- DIM_PAGO
 ### Pipeline de GitHub Actions
 
 ```yaml
-Workflow: Coffee Shop ETL - Databricks Deploy
-├── Deploy notebooks → /prod/coffee_shop
+Workflow: Deploy ETL Apple Sales And Warranty
+├── Deploy notebooks → /Production/ETL-APPLE
 ├── Eliminar workflow antiguo (si existe)
 ├── Buscar cluster configurado
 ├── Crear nuevo workflow con 4 tareas
@@ -340,19 +331,15 @@ Workflow: Coffee Shop ETL - Databricks Deploy
 └── Monitorear y notificar resultados
 ```
 
-### Configuración del Workflow Databricks
-
+### 🔄  Workflow Databricks
+![Texto descriptivo](CICD_ETL_APPLE.png)
 ```
-Tasks:
-├── create_tables_ddl    (30min, 1 retry)
-├── ingest_bronze        (60min, 2 retries)
-├── transform_silver     (60min, 2 retries)
-└── aggregate_gold       (60min, 2 retries)
 
-⏰ Schedule: Diario 10:00 AM (Lima)
+
+⏰ Schedule: Diario 8:00 AM (Lima)
 ⏱️ Timeout total: 4 horas
-🔒 Max concurrent runs: 1
-📧 Notificaciones: lchaponant@gmail.com
+ 🔒 Max concurrent runs: 1
+ ⏰ Notificaciones: isc.ventura@gmail.com
 ```
 
 ---
