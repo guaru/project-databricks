@@ -32,7 +32,7 @@ jobs:
       run: |
         DEST_HOST=${{ secrets.DATABRICKS_DEST_HOST }}
         DEST_TOKEN=${{ secrets.DATABRICKS_DEST_TOKEN }}
-        DEST_BASE="/Production"
+        DEST_BASE="/Production/ETL-APPLE"
         for file in notebooks_to_deploy/*.py; do
           name=$(basename "$file" .py)
           dest_path="$DEST_BASE/$name"
@@ -115,7 +115,7 @@ jobs:
       run: |
         DEST_HOST=${{ secrets.DATABRICKS_DEST_HOST }}
         DEST_TOKEN=${{ secrets.DATABRICKS_DEST_TOKEN }}
-        DEST_BASE="/produccion"
+        DEST_BASE="/Production/ETL-APPLE"
         CLUSTER_ID="${{ env.CLUSTER_ID }}"
         
         echo "Creando workflow: WF_PROD_ETL_APPLE_SALES con cluster existente ID: $CLUSTER_ID"
@@ -130,7 +130,7 @@ jobs:
               "task_key": "ingest_catalogs",
               "description": "Ingesta de catalogos productos, categorias y tiendas",
               "notebook_task": {
-                "notebook_path": "/production/ingest_catalogs",
+                "notebook_path": "/Production/ETL-APPLE/ingest_catalogs",
                 "source": "WORKSPACE",
                 "base_parameters": {
                   "storageName": "adlsprojectsmartdata",
@@ -147,7 +147,7 @@ jobs:
               "task_key": "ingest_sales",
               "description": "Ingesta de ventas",
               "notebook_task": {
-                "notebook_path": "/production/ingest_sales",
+                "notebook_path": "/Production/ETL-APPLE/ingest_sales",
                 "source": "WORKSPACE",
                 "base_parameters": {
                   "storageName": "adlsprojectsmartdata",
@@ -169,7 +169,7 @@ jobs:
               "task_key": "ingest_warranty",
               "description": "Ingesta de garantías",
               "notebook_task": {
-                "notebook_path": "/production/ingest_warranty",
+                "notebook_path": "/Production/ETL-APPLE/ingest_warranty",
                 "source": "WORKSPACE",
                 "base_parameters": {
                   "storageName": "adlsprojectsmartdata",
@@ -191,7 +191,7 @@ jobs:
               "task_key": "transform_sales",
               "description": "Transformación de ventas",
               "notebook_task": {
-                "notebook_path": "/production/transform_sales",
+                "notebook_path": "/Production/ETL-APPLE/transform_sales",
                 "source": "WORKSPACE",
                 "base_parameters": {
                   "catalog": "apple_production",
@@ -212,7 +212,7 @@ jobs:
               "task_key": "transform_warranty",
               "description": "Transformación de garantías",
               "notebook_task": {
-                "notebook_path": "/production/transform_warranty",
+                "notebook_path": "/Production/ETL-APPLE/transform_warranty",
                 "source": "WORKSPACE",
                 "base_parameters": {
                   "catalog": "apple_production",
@@ -233,7 +233,7 @@ jobs:
               "task_key": "load_sales",
               "description": "Carga kpi a golden",
               "notebook_task": {
-                "notebook_path": "/production/load_sales",
+                "notebook_path": "/Production/ETL-APPLE/load_sales",
                 "source": "WORKSPACE",
                 "base_parameters": {
                   "catalog": "apple_production",
@@ -254,7 +254,7 @@ jobs:
               "task_key": "load_warranty",
               "description": "Carga kpi a golden",
               "notebook_task": {
-                "notebook_path": "/production/load_warranty",
+                "notebook_path": "/Production/ETL-APPLE/load_warranty",
                 "source": "WORKSPACE",
                 "base_parameters": {
                   "catalog": "apple_production",
@@ -267,7 +267,7 @@ jobs:
               "max_retries": 2,
               "depends_on": [
                 {
-                  "task_key": "transform_sales"
+                  "task_key": "transform_warranty"
                 }
               ]
             }
