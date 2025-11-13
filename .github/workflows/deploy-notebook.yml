@@ -274,7 +274,7 @@ jobs:
           ],
           "schedule": {
             "quartz_cron_expression": "0 0 8 * * ?",
-            "timezone_id": "America/Mexico_city",
+            "timezone_id": "America/Mexico_City",
             "pause_status": "PAUSED"
           },
           "email_notifications": {
