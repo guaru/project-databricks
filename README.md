@@ -77,10 +77,11 @@ Pipeline ETL enterprise-grade que transforma datos crudos de ventas y garantias 
 **Propósito**: Modelo dimensional
 
 **Tablas**:
-- `HECHO_VENTAS`
-- `DIM_CAFE`
-- `DIM_PAGO`
-- `DIM_FECHA`
+- `category_sales`
+- `product_sales`
+- `store_sales`
+- `store_warranty_status`
+- `waranty_products`
 
 **Características**:
 - ✅ Star Schema
@@ -94,10 +95,11 @@ Pipeline ETL enterprise-grade que transforma datos crudos de ventas y garantias 
 **Propósito**: Analytics-ready
 
 **Tablas**:
-- Ventas diarias
-- Top productos
-- Análisis temporal
-- KPIs ejecutivos
+- kpi_category_sales        : Monto total en ventas agrupado por categoría y año
+- kpi_product_sales         : Monto total en ventas agrupado por producto y año
+- kpi_store_sales           : Monto total en ventas agrupado por tienda y año
+- kpi_store_warranty_status : Total de reclamos por tienda en los diferentes estatus pivot
+- kpi_product_warranty      : Productos con mayor reclamos post venta (garantía)
 
 **Características**:
 - ✅ Pre-agregados
@@ -114,18 +116,23 @@ Pipeline ETL enterprise-grade que transforma datos crudos de ventas y garantias 
 ## 📁 Estructura del Proyecto
 
 ```
-coffee-shop-etl/
+etl-apple/
 │
 ├── 📂 .github/
 │   └── 📂 workflows/
-│       └── 📄 databricks-deploy.yml    # Pipeline CI/CD
-│
-├── 📂 proceso/
-│   ├── 📄 1-Ddls-Medallion.sql         # Creación de esquema
-│   ├── 🐍 2-Ingest-Coffee-Shop-Data.py # Bronze Layer
-│   ├── 🐍 3-Transform.py                # Silver Layer
-│   └── 🐍 4-Load.py                     # Gold Layer
-│
+│       └── 📄 deploy-certification.yml    # Pipeline CI/CD deploy a certification workspace databricks
+├── 📂 process/
+│   ├── 🐍 ingest_catalogs.py           # Bronze layer
+│   ├── 🐍 ingest_sales.py              # Bronze Layer
+│   ├── 🐍 ingest_warranty.py           # Bronze Layer
+│   ├── 🐍 transform_sales.py           # Silver Layer
+│   ├── 🐍 transform_warranty.py        # Silver Layer
+│   └── 🐍 load_sales.py                # Gold Layer
+│   └── 🐍 load_warranty.py             # Gold Layer
+├── 📂 security/
+|   ├── 🐍 Enviroment preparation.py    # Create Schema, Tables, External location
+├── 📂 security/
+|   ├── 🐍 Permissions.py               # Sql Grant
 └── 📄 README.md
 ```
 
@@ -152,7 +159,7 @@ coffee-shop-etl/
 
 - ☁️ Cuenta de Azure con acceso a Databricks
 - 💻 Workspace de Databricks configurado
-- 🖥️ Cluster activo (nombre: `CLUSTER COFFEE SHOP`)
+- 🖥️ Cluster activo (nombre: `Cluster1`)
 - 🐙 Cuenta de GitHub con permisos de administrador
 - 📦 Azure Data Lake Storage Gen2 configurado
 - 📊 Power BI Desktop (opcional para visualización)
@@ -164,8 +171,8 @@ coffee-shop-etl/
 ### 1️⃣ Clonar el Repositorio
 
 ```bash
-git clone https://github.com/tu-usuario/coffee-shop-etl.git
-cd coffee-shop-etl
+git clone https://github.com/guaru/project-databricks.git
+cd project-databricks
 ```
 
 ### 2️⃣ Configurar Databricks Token
@@ -190,7 +197,7 @@ En tu repositorio: **Settings** → **Secrets and variables** → **Actions**
 ### 4️⃣ Verificar Storage Configuration
 
 ```python
-storage_path = "abfss://coffeeshop@adlsdevluis25.dfs.core.windows.net"
+storage_path = "abfss://raw@adlsprojectsmartdata.dfs.core.windows.net"
 ```
 
 <div align="center">
@@ -212,28 +219,32 @@ git push origin master
 ```
 
 **GitHub Actions ejecutará**:
-- 📤 Deploy de notebooks a `/prod/coffee_shop`
-- 🔧 Creación del workflow `CoffeeShopWFDeploy`
-- ▶️ Ejecución completa: DDL → Bronze → Silver → Gold
+- 📤 Deploy de notebooks a `/Production/ETL-APPLE`
+- 🔧 Creación del workflow `WF_PROD_ETL_APPLE_SALES`
+- ▶️ Ejecución completa:  Bronze → Silver → Gold
 - 📧 Notificaciones de resultados
 
 ### 🖱️ Despliegue Manual desde GitHub
 
 1. Ir al tab **Actions** en GitHub
-2. Seleccionar **Coffee Shop ETL - Databricks Deploy**
+2. Seleccionar **Deploy ETL Apple Sales And Warranty**
 3. Click en **Run workflow**
-4. Seleccionar rama `master`
+4. Seleccionar rama `main`
 5. Click en **Run workflow**
 
 ### 🔧 Ejecución Local en Databricks
 
-Navegar a `/prod/coffee_shop` y ejecutar en orden:
+Navegar a `/Production/ETL-APPLE` y ejecutar en orden:
 
 ```
-1️⃣ 1-Ddls-Medallion.sql         → Crear esquema
-2️⃣ 2-Ingest-Coffee-Shop-Data.py → Bronze Layer
-3️⃣ 3-Transform.py                → Silver Layer
-4️⃣ 4-Load.py                     → Gold Layer
+- Enviroment preparation.py         → Crear esquema
+- ingest_catalogs.py                → Bronze Layer
+- ingest_sales.py                   → Bronze Layer
+- ingest_warranty.py                → Bronze Layer
+- transform_sales.py                → Silver Layer
+- transform_warranty.py             → Silver Layer
+- load_sales.py                     → Gold Layer
+- load_warranty.py                  → Gold Layer
 ```
 
 ---
@@ -242,14 +253,6 @@ Navegar a `/prod/coffee_shop` y ejecutar en orden:
 
 ### 🥈 Silver Layer - Star Schema
 
-```
-                    DIM_FECHA
-                        |
-                        |
-DIM_CAFE -------- HECHO_VENTAS -------- DIM_PAGO
-                        |
-                   (Fact Table)
-```
 
 #### 🎯 HECHO_VENTAS (Fact Table)
 
@@ -319,8 +322,8 @@ DIM_CAFE -------- HECHO_VENTAS -------- DIM_PAGO
 ### Pipeline de GitHub Actions
 
 ```yaml
-Workflow: Coffee Shop ETL - Databricks Deploy
-├── Deploy notebooks → /prod/coffee_shop
+Workflow: Deploy ETL Apple Sales And Warranty
+├── Deploy notebooks → /Production/ETL-APPLE
 ├── Eliminar workflow antiguo (si existe)
 ├── Buscar cluster configurado
 ├── Crear nuevo workflow con 4 tareas
@@ -328,19 +331,17 @@ Workflow: Coffee Shop ETL - Databricks Deploy
 └── Monitorear y notificar resultados
 ```
 
-### Configuración del Workflow Databricks
-
+### 🔄  Workflow Databricks
+![Texto descriptivo](CICD_ETL_APPLE.png)
 ```
-Tasks:
-├── create_tables_ddl    (30min, 1 retry)
-├── ingest_bronze        (60min, 2 retries)
-├── transform_silver     (60min, 2 retries)
-└── aggregate_gold       (60min, 2 retries)
 
-⏰ Schedule: Diario 10:00 AM (Lima)
+
+⏰ Schedule: Diario 8:00 AM (Lima)
 ⏱️ Timeout total: 4 horas
-🔒 Max concurrent runs: 1
-📧 Notificaciones: lchaponant@gmail.com
+ 🔒 Max concurrent runs: 1
+⏰ Notificaciones: 
+      success: isc.ventura@gmail.com
+      failed:  isc.ventura@gmail.com
 ```
 
 ---
@@ -414,7 +415,7 @@ catalog_prod
 
 **Workflows**:
 - Ir a **Workflows** en el menú lateral
-- Buscar `CoffeeShopWFDeploy`
+- Buscar `ETL_PROD_APPLE_SALES`
 - Ver historial de ejecuciones
 
 **Logs por Tarea**:
@@ -429,41 +430,6 @@ catalog_prod
 - Click en ejecución específica para detalles
 - Revisar logs de cada step
 
-### Notificaciones
-
-- 📧 **Email**: Configurado para `lchaponant@gmail.com` en caso de fallo
-- 🔔 **GitHub**: Notificaciones en el repositorio
-
----
-
-## 🐛 Troubleshooting
-
-<details>
-<summary><b>Error: Cluster not found</b></summary>
-
-**Solución**: Verificar que el cluster `CLUSTER COFFEE SHOP` esté activo en Databricks.
-
-```bash
-# Verificar nombre exacto del cluster en Databricks
-```
-</details>
-
-<details>
-<summary><b>Error: Authentication failed</b></summary>
-
-**Solución**: Regenerar Personal Access Token y actualizar GitHub Secrets.
-</details>
-
-<details>
-<summary><b>Error: Storage path not found</b></summary>
-
-**Solución**: Verificar que el ADLS Gen2 esté montado correctamente:
-
-```python
-storage_path = "abfss://coffeeshop@adlsdevluis25.dfs.core.windows.net"
-```
-</details>
-
 ---
 
 ## 👤 Autor
@@ -472,9 +438,9 @@ storage_path = "abfss://coffeeshop@adlsdevluis25.dfs.core.windows.net"
 
 ### Alejandro de Jesus Ventura Martinez
 
-[![LinkedIn](https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/luis-chaponan-tejada/)
-[![GitHub](https://img.shields.io/badge/GitHub-100000?style=for-the-badge&logo=github&logoColor=white)](https://github.com/ltechdev)
-[![Email](https://img.shields.io/badge/Email-D14836?style=for-the-badge&logo=gmail&logoColor=white)](mailto:lchaponant@gmail.com)
+[![LinkedIn](https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/alejandro-ventura-martinez-049009142/)
+[![GitHub](https://img.shields.io/badge/GitHub-100000?style=for-the-badge&logo=github&logoColor=white)](https://github.com/guaru)
+[![Email](https://img.shields.io/badge/Email-D14836?style=for-the-badge&logo=gmail&logoColor=white)](mailto:isc.ventura@gmail.com)
 
 **Data Engineering** | **Azure Databricks** | **Delta Lake** | **CI/CD**
 
