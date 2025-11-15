@@ -1,0 +1,906 @@
+{
+  "datasets": [
+    {
+      "name": "3a3c0d72",
+      "displayName": "store_sales",
+      "queryLines": [
+        "select * from apple_production.golden.kpi_store_sales"
+      ],
+      "catalog": "apple_production",
+      "schema": "golden"
+    },
+    {
+      "name": "ee33163f",
+      "displayName": "product_sales",
+      "queryLines": [
+        "select * from apple_production.golden.kpi_product_sales"
+      ],
+      "catalog": "apple_production",
+      "schema": "golden"
+    },
+    {
+      "name": "181b3ae7",
+      "displayName": "category_sales",
+      "queryLines": [
+        "select * from apple_production.golden.kpi_category_sales"
+      ],
+      "catalog": "apple_production",
+      "schema": "golden"
+    },
+    {
+      "name": "a57cdb3d",
+      "displayName": "store_warranty",
+      "queryLines": [
+        "select * from apple_production.golden.kpi_store_warranty_status"
+      ],
+      "catalog": "apple_production",
+      "schema": "golden"
+    },
+    {
+      "name": "c2b08dfa",
+      "displayName": "product_warranty",
+      "queryLines": [
+        "select * from apple_production.golden.kpi_product_warranty"
+      ],
+      "catalog": "apple_production",
+      "schema": "golden"
+    }
+  ],
+  "pages": [
+    {
+      "name": "ee4324f3",
+      "displayName": "Apple Ventas",
+      "layout": [
+        {
+          "widget": {
+            "name": "a9cfaea8",
+            "queries": [
+              {
+                "name": "dashboards/01f0c186152f1b8d85514c4298b5e88d/datasets/01f0c18968051531ae101732fdd9cef8_year",
+                "query": {
+                  "datasetName": "3a3c0d72",
+                  "fields": [
+                    {
+                      "name": "year",
+                      "expression": "`year`"
+                    },
+                    {
+                      "name": "year_associativity",
+                      "expression": "COUNT_IF(`associative_filter_predicate_group`)"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              },
+              {
+                "name": "dashboards/01f0c186152f1b8d85514c4298b5e88d/datasets/01f0c1a0e4ed1cf399b56432929baf5e_year",
+                "query": {
+                  "datasetName": "ee33163f",
+                  "fields": [
+                    {
+                      "name": "year",
+                      "expression": "`year`"
+                    },
+                    {
+                      "name": "year_associativity",
+                      "expression": "COUNT_IF(`associative_filter_predicate_group`)"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              },
+              {
+                "name": "dashboards/01f0c186152f1b8d85514c4298b5e88d/datasets/01f0c1a1e9c118168c911a9a7cbbf9ca_year",
+                "query": {
+                  "datasetName": "181b3ae7",
+                  "fields": [
+                    {
+                      "name": "year",
+                      "expression": "`year`"
+                    },
+                    {
+                      "name": "year_associativity",
+                      "expression": "COUNT_IF(`associative_filter_predicate_group`)"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              }
+            ],
+            "spec": {
+              "version": 2,
+              "widgetType": "filter-single-select",
+              "encodings": {
+                "fields": [
+                  {
+                    "fieldName": "year",
+                    "queryName": "dashboards/01f0c186152f1b8d85514c4298b5e88d/datasets/01f0c18968051531ae101732fdd9cef8_year"
+                  },
+                  {
+                    "fieldName": "year",
+                    "queryName": "dashboards/01f0c186152f1b8d85514c4298b5e88d/datasets/01f0c1a0e4ed1cf399b56432929baf5e_year"
+                  },
+                  {
+                    "fieldName": "year",
+                    "queryName": "dashboards/01f0c186152f1b8d85514c4298b5e88d/datasets/01f0c1a1e9c118168c911a9a7cbbf9ca_year"
+                  }
+                ]
+              },
+              "frame": {
+                "showTitle": true,
+                "title": "Año"
+              },
+              "selection": {
+                "defaultSelection": {
+                  "values": {
+                    "dataType": "INTEGER",
+                    "values": [
+                      {
+                        "value": "2020"
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          },
+          "position": {
+            "x": 0,
+            "y": 0,
+            "width": 2,
+            "height": 1
+          }
+        },
+        {
+          "widget": {
+            "name": "a9788a13",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "ee33163f",
+                  "fields": [
+                    {
+                      "name": "amount_total_sales",
+                      "expression": "`amount_total_sales`"
+                    },
+                    {
+                      "name": "product_name",
+                      "expression": "`product_name`"
+                    }
+                  ],
+                  "filters": [
+                    {
+                      "expression": "`year` IN (`year`) OR TRUE"
+                    }
+                  ],
+                  "disaggregated": true
+                }
+              }
+            ],
+            "spec": {
+              "version": 3,
+              "widgetType": "bar",
+              "encodings": {
+                "x": {
+                  "fieldName": "amount_total_sales",
+                  "displayName": "Ventas",
+                  "scale": {
+                    "type": "quantitative"
+                  }
+                },
+                "y": {
+                  "fieldName": "product_name",
+                  "displayName": "Producto",
+                  "scale": {
+                    "type": "categorical"
+                  }
+                },
+                "label": {
+                  "show": false
+                }
+              },
+              "frame": {
+                "showTitle": true,
+                "title": "Productos"
+              },
+              "mark": {
+                "colors": [
+                  "#2A9968",
+                  {
+                    "themeColorType": "visualizationColors",
+                    "position": 2
+                  },
+                  {
+                    "themeColorType": "visualizationColors",
+                    "position": 3
+                  },
+                  {
+                    "themeColorType": "visualizationColors",
+                    "position": 4
+                  },
+                  {
+                    "themeColorType": "visualizationColors",
+                    "position": 5
+                  },
+                  {
+                    "themeColorType": "visualizationColors",
+                    "position": 6
+                  },
+                  {
+                    "themeColorType": "visualizationColors",
+                    "position": 7
+                  },
+                  {
+                    "themeColorType": "visualizationColors",
+                    "position": 8
+                  },
+                  {
+                    "themeColorType": "visualizationColors",
+                    "position": 9
+                  },
+                  {
+                    "themeColorType": "visualizationColors",
+                    "position": 10
+                  }
+                ]
+              }
+            }
+          },
+          "position": {
+            "x": 0,
+            "y": 8,
+            "width": 6,
+            "height": 20
+          }
+        },
+        {
+          "widget": {
+            "name": "efdd176d",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "181b3ae7",
+                  "fields": [
+                    {
+                      "name": "category_name",
+                      "expression": "`category_name`"
+                    },
+                    {
+                      "name": "amount_total_sales",
+                      "expression": "`amount_total_sales`"
+                    }
+                  ],
+                  "filters": [
+                    {
+                      "expression": "`year` IN (`year`) OR TRUE"
+                    }
+                  ],
+                  "disaggregated": true
+                }
+              }
+            ],
+            "spec": {
+              "version": 3,
+              "widgetType": "bar",
+              "encodings": {
+                "x": {
+                  "fieldName": "category_name",
+                  "displayName": "Categoría",
+                  "scale": {
+                    "type": "categorical"
+                  }
+                },
+                "y": {
+                  "fieldName": "amount_total_sales",
+                  "displayName": "Ventas",
+                  "scale": {
+                    "type": "quantitative"
+                  }
+                }
+              },
+              "frame": {
+                "showTitle": true,
+                "title": "Categorías"
+              }
+            }
+          },
+          "position": {
+            "x": 0,
+            "y": 28,
+            "width": 3,
+            "height": 6
+          }
+        },
+        {
+          "widget": {
+            "name": "a24d2f6a",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "3a3c0d72",
+                  "fields": [
+                    {
+                      "name": "amount_total_sales",
+                      "expression": "`amount_total_sales`"
+                    },
+                    {
+                      "name": "store_name",
+                      "expression": "`store_name`"
+                    }
+                  ],
+                  "filters": [
+                    {
+                      "expression": "`year` IN (`year`) OR TRUE"
+                    },
+                    {
+                      "expression": "`score` IN ('EXCEPCIONAL', 'SOBRE PROMEDIO')"
+                    }
+                  ],
+                  "disaggregated": true
+                }
+              }
+            ],
+            "spec": {
+              "version": 3,
+              "widgetType": "bar",
+              "encodings": {
+                "x": {
+                  "fieldName": "amount_total_sales",
+                  "displayName": "Ventas",
+                  "scale": {
+                    "type": "quantitative"
+                  }
+                },
+                "y": {
+                  "fieldName": "store_name",
+                  "displayName": "Tienda",
+                  "scale": {
+                    "type": "categorical"
+                  }
+                }
+              },
+              "frame": {
+                "showTitle": true,
+                "title": "Tiendas con mejores ventas >= 25 M"
+              }
+            }
+          },
+          "position": {
+            "x": 0,
+            "y": 1,
+            "width": 3,
+            "height": 7
+          }
+        },
+        {
+          "widget": {
+            "name": "8135618d",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "3a3c0d72",
+                  "fields": [
+                    {
+                      "name": "amount_total_sales",
+                      "expression": "`amount_total_sales`"
+                    },
+                    {
+                      "name": "store_name",
+                      "expression": "`store_name`"
+                    }
+                  ],
+                  "filters": [
+                    {
+                      "expression": "`year` IN (`year`) OR TRUE"
+                    },
+                    {
+                      "expression": "`score` IN ('CRITICO')"
+                    }
+                  ],
+                  "disaggregated": true
+                }
+              }
+            ],
+            "spec": {
+              "version": 3,
+              "widgetType": "bar",
+              "encodings": {
+                "x": {
+                  "fieldName": "amount_total_sales",
+                  "displayName": "Ventas",
+                  "scale": {
+                    "type": "quantitative"
+                  }
+                },
+                "y": {
+                  "fieldName": "store_name",
+                  "displayName": "Tiendas",
+                  "scale": {
+                    "type": "categorical"
+                  }
+                }
+              },
+              "frame": {
+                "showTitle": true,
+                "title": "Tiendas con Ventas criticas  < 15 M"
+              },
+              "mark": {
+                "colors": [
+                  {
+                    "themeColorType": "visualizationColors",
+                    "position": 4
+                  },
+                  {
+                    "themeColorType": "visualizationColors",
+                    "position": 2
+                  },
+                  {
+                    "themeColorType": "visualizationColors",
+                    "position": 3
+                  },
+                  {
+                    "themeColorType": "visualizationColors",
+                    "position": 4
+                  },
+                  {
+                    "themeColorType": "visualizationColors",
+                    "position": 5
+                  },
+                  {
+                    "themeColorType": "visualizationColors",
+                    "position": 6
+                  },
+                  {
+                    "themeColorType": "visualizationColors",
+                    "position": 7
+                  },
+                  {
+                    "themeColorType": "visualizationColors",
+                    "position": 8
+                  },
+                  {
+                    "themeColorType": "visualizationColors",
+                    "position": 9
+                  },
+                  {
+                    "themeColorType": "visualizationColors",
+                    "position": 10
+                  }
+                ]
+              }
+            }
+          },
+          "position": {
+            "x": 3,
+            "y": 1,
+            "width": 3,
+            "height": 7
+          }
+        }
+      ],
+      "pageType": "PAGE_TYPE_CANVAS"
+    },
+    {
+      "name": "86441803",
+      "displayName": "Global Filters",
+      "pageType": "PAGE_TYPE_GLOBAL_FILTERS"
+    },
+    {
+      "name": "f7f70bab",
+      "displayName": "Apple Reclamos",
+      "layout": [
+        {
+          "widget": {
+            "name": "4eddc183",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "a57cdb3d",
+                  "fields": [
+                    {
+                      "name": "store_id",
+                      "expression": "`store_id`"
+                    },
+                    {
+                      "name": "store_name",
+                      "expression": "`store_name`"
+                    },
+                    {
+                      "name": "pending",
+                      "expression": "`pending`"
+                    },
+                    {
+                      "name": "in_progress",
+                      "expression": "`in_progress`"
+                    },
+                    {
+                      "name": "completed",
+                      "expression": "`completed`"
+                    },
+                    {
+                      "name": "rejected",
+                      "expression": "`rejected`"
+                    }
+                  ],
+                  "filters": [
+                    {
+                      "expression": "`store_name` IN (`store_name`) OR TRUE"
+                    }
+                  ],
+                  "disaggregated": true
+                }
+              }
+            ],
+            "spec": {
+              "version": 1,
+              "widgetType": "table",
+              "encodings": {
+                "columns": [
+                  {
+                    "fieldName": "store_id",
+                    "booleanValues": [
+                      "false",
+                      "true"
+                    ],
+                    "imageUrlTemplate": "{{ @ }}",
+                    "imageTitleTemplate": "{{ @ }}",
+                    "imageWidth": "",
+                    "imageHeight": "",
+                    "linkUrlTemplate": "{{ @ }}",
+                    "linkTextTemplate": "{{ @ }}",
+                    "linkTitleTemplate": "{{ @ }}",
+                    "linkOpenInNewTab": true,
+                    "type": "string",
+                    "displayAs": "string",
+                    "visible": true,
+                    "order": 0,
+                    "title": "Store Id",
+                    "allowSearch": false,
+                    "alignContent": "left",
+                    "allowHTML": false,
+                    "highlightLinks": false,
+                    "useMonospaceFont": false,
+                    "preserveWhitespace": false
+                  },
+                  {
+                    "fieldName": "store_name",
+                    "booleanValues": [
+                      "false",
+                      "true"
+                    ],
+                    "imageUrlTemplate": "{{ @ }}",
+                    "imageTitleTemplate": "{{ @ }}",
+                    "imageWidth": "",
+                    "imageHeight": "",
+                    "linkUrlTemplate": "{{ @ }}",
+                    "linkTextTemplate": "{{ @ }}",
+                    "linkTitleTemplate": "{{ @ }}",
+                    "linkOpenInNewTab": true,
+                    "type": "string",
+                    "displayAs": "string",
+                    "visible": true,
+                    "order": 1,
+                    "title": "Tienda",
+                    "allowSearch": false,
+                    "alignContent": "left",
+                    "allowHTML": false,
+                    "highlightLinks": false,
+                    "useMonospaceFont": false,
+                    "preserveWhitespace": false
+                  },
+                  {
+                    "fieldName": "pending",
+                    "numberFormat": "0",
+                    "booleanValues": [
+                      "false",
+                      "true"
+                    ],
+                    "imageUrlTemplate": "{{ @ }}",
+                    "imageTitleTemplate": "{{ @ }}",
+                    "imageWidth": "",
+                    "imageHeight": "",
+                    "linkUrlTemplate": "{{ @ }}",
+                    "linkTextTemplate": "{{ @ }}",
+                    "linkTitleTemplate": "{{ @ }}",
+                    "linkOpenInNewTab": true,
+                    "type": "integer",
+                    "displayAs": "number",
+                    "visible": true,
+                    "order": 2,
+                    "title": "Pendientes",
+                    "allowSearch": false,
+                    "alignContent": "right",
+                    "allowHTML": false,
+                    "highlightLinks": false,
+                    "useMonospaceFont": false,
+                    "preserveWhitespace": false
+                  },
+                  {
+                    "fieldName": "in_progress",
+                    "numberFormat": "0",
+                    "booleanValues": [
+                      "false",
+                      "true"
+                    ],
+                    "imageUrlTemplate": "{{ @ }}",
+                    "imageTitleTemplate": "{{ @ }}",
+                    "imageWidth": "",
+                    "imageHeight": "",
+                    "linkUrlTemplate": "{{ @ }}",
+                    "linkTextTemplate": "{{ @ }}",
+                    "linkTitleTemplate": "{{ @ }}",
+                    "linkOpenInNewTab": true,
+                    "type": "integer",
+                    "displayAs": "number",
+                    "visible": true,
+                    "order": 3,
+                    "title": "En atención",
+                    "allowSearch": false,
+                    "alignContent": "right",
+                    "allowHTML": false,
+                    "highlightLinks": false,
+                    "useMonospaceFont": false,
+                    "preserveWhitespace": false
+                  },
+                  {
+                    "fieldName": "completed",
+                    "numberFormat": "0",
+                    "booleanValues": [
+                      "false",
+                      "true"
+                    ],
+                    "imageUrlTemplate": "{{ @ }}",
+                    "imageTitleTemplate": "{{ @ }}",
+                    "imageWidth": "",
+                    "imageHeight": "",
+                    "linkUrlTemplate": "{{ @ }}",
+                    "linkTextTemplate": "{{ @ }}",
+                    "linkTitleTemplate": "{{ @ }}",
+                    "linkOpenInNewTab": true,
+                    "type": "integer",
+                    "displayAs": "number",
+                    "visible": true,
+                    "order": 4,
+                    "title": "Atendidos",
+                    "allowSearch": false,
+                    "alignContent": "right",
+                    "allowHTML": false,
+                    "highlightLinks": false,
+                    "useMonospaceFont": false,
+                    "preserveWhitespace": false
+                  },
+                  {
+                    "fieldName": "rejected",
+                    "numberFormat": "0",
+                    "booleanValues": [
+                      "false",
+                      "true"
+                    ],
+                    "imageUrlTemplate": "{{ @ }}",
+                    "imageTitleTemplate": "{{ @ }}",
+                    "imageWidth": "",
+                    "imageHeight": "",
+                    "linkUrlTemplate": "{{ @ }}",
+                    "linkTextTemplate": "{{ @ }}",
+                    "linkTitleTemplate": "{{ @ }}",
+                    "linkOpenInNewTab": true,
+                    "type": "integer",
+                    "displayAs": "number",
+                    "visible": true,
+                    "order": 5,
+                    "title": "Rechazados",
+                    "allowSearch": false,
+                    "alignContent": "right",
+                    "allowHTML": false,
+                    "highlightLinks": false,
+                    "useMonospaceFont": false,
+                    "preserveWhitespace": false
+                  }
+                ]
+              },
+              "invisibleColumns": [],
+              "allowHTMLByDefault": false,
+              "itemsPerPage": 20,
+              "paginationSize": "default",
+              "condensed": true,
+              "withRowNumber": true,
+              "frame": {
+                "showTitle": true,
+                "title": "Score de Reclamos en Tienda",
+                "showDescription": false
+              }
+            }
+          },
+          "position": {
+            "x": 0,
+            "y": 2,
+            "width": 6,
+            "height": 6
+          }
+        },
+        {
+          "widget": {
+            "name": "b6684675",
+            "queries": [
+              {
+                "name": "dashboards/01f0c186152f1b8d85514c4298b5e88d/datasets/01f0c1a2bc0c14ac9a3ffaf682bff4c5_store_name",
+                "query": {
+                  "datasetName": "a57cdb3d",
+                  "fields": [
+                    {
+                      "name": "store_name",
+                      "expression": "`store_name`"
+                    },
+                    {
+                      "name": "store_name_associativity",
+                      "expression": "COUNT_IF(`associative_filter_predicate_group`)"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              }
+            ],
+            "spec": {
+              "version": 2,
+              "widgetType": "filter-multi-select",
+              "encodings": {
+                "fields": [
+                  {
+                    "fieldName": "store_name",
+                    "queryName": "dashboards/01f0c186152f1b8d85514c4298b5e88d/datasets/01f0c1a2bc0c14ac9a3ffaf682bff4c5_store_name"
+                  }
+                ]
+              },
+              "frame": {
+                "showTitle": true,
+                "title": "Tienda"
+              }
+            }
+          },
+          "position": {
+            "x": 0,
+            "y": 1,
+            "width": 2,
+            "height": 1
+          }
+        },
+        {
+          "widget": {
+            "name": "5ce5c600",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "c2b08dfa",
+                  "fields": [
+                    {
+                      "name": "total_claims",
+                      "expression": "`total_claims`"
+                    },
+                    {
+                      "name": "product_name",
+                      "expression": "`product_name`"
+                    }
+                  ],
+                  "disaggregated": true
+                }
+              }
+            ],
+            "spec": {
+              "version": 3,
+              "widgetType": "bar",
+              "encodings": {
+                "x": {
+                  "fieldName": "total_claims",
+                  "displayName": "Reclamos",
+                  "scale": {
+                    "type": "quantitative"
+                  }
+                },
+                "y": {
+                  "fieldName": "product_name",
+                  "displayName": "Producto",
+                  "scale": {
+                    "type": "categorical"
+                  }
+                }
+              },
+              "frame": {
+                "showTitle": true,
+                "title": "Indicador de reclamos por producto"
+              }
+            }
+          },
+          "position": {
+            "x": 0,
+            "y": 11,
+            "width": 6,
+            "height": 27
+          }
+        },
+        {
+          "widget": {
+            "name": "ab5abe81",
+            "multilineTextboxSpec": {
+              "lines": [
+                "### Reclamos Post Venta del 2024"
+              ]
+            },
+            "specExtensions": {
+              "widgetBorderColor": {
+                "dark": "#0D0F16"
+              }
+            }
+          },
+          "position": {
+            "x": 0,
+            "y": 0,
+            "width": 6,
+            "height": 1
+          }
+        },
+        {
+          "widget": {
+            "name": "fc4a9444",
+            "queries": [
+              {
+                "name": "dashboards/01f0c186152f1b8d85514c4298b5e88d/datasets/01f0c1a869121270be235c4b14710269_category_name",
+                "query": {
+                  "datasetName": "c2b08dfa",
+                  "fields": [
+                    {
+                      "name": "category_name",
+                      "expression": "`category_name`"
+                    },
+                    {
+                      "name": "category_name_associativity",
+                      "expression": "COUNT_IF(`associative_filter_predicate_group`)"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              }
+            ],
+            "spec": {
+              "version": 2,
+              "widgetType": "filter-multi-select",
+              "encodings": {
+                "fields": [
+                  {
+                    "fieldName": "category_name",
+                    "queryName": "dashboards/01f0c186152f1b8d85514c4298b5e88d/datasets/01f0c1a869121270be235c4b14710269_category_name"
+                  }
+                ]
+              },
+              "frame": {
+                "showTitle": true,
+                "title": "Categoría"
+              }
+            }
+          },
+          "position": {
+            "x": 0,
+            "y": 10,
+            "width": 2,
+            "height": 1
+          }
+        }
+      ],
+      "pageType": "PAGE_TYPE_CANVAS"
+    }
+  ],
+  "uiSettings": {
+    "theme": {
+      "widgetHeaderAlignment": "ALIGNMENT_UNSPECIFIED"
+    },
+    "genieSpace": {
+      "isEnabled": false
+    },
+    "applyModeEnabled": false
+  }
+}

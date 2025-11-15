@@ -249,73 +249,6 @@ Navegar a `/Production/ETL-APPLE` y ejecutar en orden:
 
 ---
 
-## 📊 Modelo de Datos
-
-### 🥈 Silver Layer - Star Schema
-
-
-#### 🎯 HECHO_VENTAS (Fact Table)
-
-| Campo | Tipo | Descripción |
-|-------|------|-------------|
-| `fecha` | DATE | Fecha de transacción (FK) |
-| `hora` | TIMESTAMP | Hora exacta de venta |
-| `id_cafe` | INT | Producto vendido (FK) |
-| `id_pago` | INT | Método de pago (FK) |
-| `cantidad` | INT | Unidades vendidas |
-| `precio_unitario` | DOUBLE | Precio por unidad |
-| `monto_total` | DOUBLE | Total de transacción |
-| `franja_horaria` | STRING | Mañana/Tarde/Noche |
-| `fecha_procesamiento` | TIMESTAMP | Audit timestamp |
-
-#### ☕ DIM_CAFE (Product Dimension)
-
-| Campo | Tipo | Descripción |
-|-------|------|-------------|
-| `id_cafe` | INT | Clave primaria |
-| `coffee_name` | STRING | Nombre del producto |
-| `categoria` | STRING | Espresso, Latte, Bebida Fría, Otros |
-| `tamanio` | STRING | Grande, Mediano, Pequeño |
-| `precio_base` | DOUBLE | Precio promedio histórico |
-| `activo` | BOOLEAN | Estado del producto |
-| `fecha_vigencia` | DATE | Fecha de alta |
-
-#### 💳 DIM_PAGO (Payment Dimension)
-
-| Campo | Tipo | Descripción |
-|-------|------|-------------|
-| `id_pago` | INT | Clave primaria |
-| `cash_type` | STRING | card, cash, online |
-| `proveedor` | STRING | Visa/Mastercard, PayPal, null |
-| `activo` | BOOLEAN | Estado del método |
-
-#### 📅 DIM_FECHA (Date Dimension)
-
-| Campo | Tipo | Descripción |
-|-------|------|-------------|
-| `fecha` | DATE | Fecha completa (PK) |
-| `anio` | INT | Año |
-| `trimestre` | INT | Trimestre (1-4) |
-| `mes` | INT | Mes (1-12) |
-| `month_name` | STRING | Nombre del mes |
-| `dia_semana` | INT | Día de la semana (1-7) |
-| `weekday` | STRING | Nombre del día |
-| `es_fin_semana` | BOOLEAN | Sábado o domingo |
-| `es_feriado` | BOOLEAN | Día feriado |
-
-### 🥇 Gold Layer - Agregados de Negocio
-
-| Tabla | Descripción | Actualización |
-|-------|-------------|---------------|
-| `AGG_VENTAS_DIARIAS` | Métricas diarias consolidadas | Diaria |
-| `AGG_VENTAS_POR_CAFE` | Performance por producto | Diaria |
-| `AGG_VENTAS_POR_PAGO` | Distribución de métodos de pago | Diaria |
-| `AGG_VENTAS_POR_DIA_SEMANA` | Patrones semanales | Diaria |
-| `AGG_VENTAS_POR_FRANJA_HORARIA` | Análisis por hora del día | Diaria |
-| `AGG_TOP_PRODUCTOS` | Ranking mensual de productos | Mensual |
-| `AGG_RESUMEN_MENSUAL` | Dashboard ejecutivo | Mensual |
-
----
 
 ## 🔄 CI/CD
 
@@ -346,68 +279,11 @@ Workflow: Deploy ETL Apple Sales And Warranty
 
 ---
 
-## 📈 Conexión con Power BI
+## 📈 Dashboards
+### Apple Sales
+### Apple Warranty
 
-### Prerequisitos
 
-- ✅ SQL Warehouse activo en Databricks
-- ✅ Personal Access Token generado
-- ✅ Power BI Desktop instalado
-
-### Pasos de Conexión
-
-#### 1️⃣ Obtener Credenciales de Databricks
-
-En Databricks: **SQL Warehouses** → Seleccionar warehouse → **Connection Details**
-
-Copiar:
-- `Server hostname`: `adb-xxxxx.azuredatabricks.net`
-- `HTTP Path`: `/sql/1.0/warehouses/xxxxx`
-
-#### 2️⃣ Conectar Power BI Desktop
-
-1. Abrir Power BI Desktop
-2. **Get Data** → **More** → **Azure Databricks**
-3. Ingresar credenciales copiadas
-4. **Data Connectivity mode**: `DirectQuery` (recomendado)
-5. **Autenticación**: Personal Access Token
-6. Click **Connect**
-
-#### 3️⃣ Seleccionar Tablas Gold
-
-```
-catalog_prod
-└── golden
-    ├── AGG_VENTAS_DIARIAS
-    ├── AGG_VENTAS_POR_CAFE
-    ├── AGG_VENTAS_POR_PAGO
-    ├── AGG_VENTAS_POR_DIA_SEMANA
-    ├── AGG_VENTAS_POR_FRANJA_HORARIA
-    ├── AGG_TOP_PRODUCTOS
-    └── AGG_RESUMEN_MENSUAL
-```
-
-#### 4️⃣ Configurar Modo de Conectividad
-
-**DirectQuery (Recomendado)**
-- ✅ Datos siempre actualizados
-- ✅ No ocupa espacio en Power BI
-- ✅ Queries se ejecutan en Databricks
-
-**Import Mode**
-- ✅ Más rápido para visualizaciones
-- ⚠️ Requiere refresh programado
-- ⚠️ Limitación de volumen de datos
-
-### 📊 Dashboards Recomendados
-
-- 📈 **Ventas Diarias**: Line chart con tendencias temporales
-- 🏆 **Top Productos**: Bar chart con ranking de cafés
-- 💳 **Análisis de Pagos**: Pie chart con distribución
-- ⏰ **Patrones Horarios**: Heatmap de ventas por hora
-- 📊 **Resumen Ejecutivo**: KPIs consolidados con cards
-
----
 
 ## 🔍 Monitoreo
 
