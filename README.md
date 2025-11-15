@@ -48,6 +48,9 @@ Pipeline ETL enterprise-grade que transforma datos crudos de ventas y garantias 
 📊 Power BI (Visualización)
 ```
 
+![Texto descriptivo](Arquitectura.png)
+
+
 ### 📦 Capas del Pipeline
 
 <table>

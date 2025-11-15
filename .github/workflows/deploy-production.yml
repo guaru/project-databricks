@@ -278,8 +278,8 @@ jobs:
             "pause_status": "PAUSED"
           },
           "email_notifications": {
-            "on_failure": [],
-            "on_success": [],
+            "on_failure": ["isc.ventura@gmail.com"],
+            "on_success": ["isc.ventura@gmail.com"],
             "no_alert_for_skipped_runs": false
           },
           "webhook_notifications": {},
