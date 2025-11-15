@@ -7,7 +7,7 @@
 [![Azure](https://img.shields.io/badge/Azure-0078D4?style=for-the-badge&logo=microsoft-azure&logoColor=white)](https://azure.microsoft.com/)
 [![PySpark](https://img.shields.io/badge/PySpark-E25A1C?style=for-the-badge&logo=apache-spark&logoColor=white)](https://spark.apache.org/)
 [![Delta Lake](https://img.shields.io/badge/Delta_Lake-00ADD8?style=for-the-badge&logo=delta&logoColor=white)](https://delta.io/)
-[![Power BI](https://img.shields.io/badge/Power_BI-F2C811?style=for-the-badge&logo=power-bi&logoColor=black)](https://powerbi.microsoft.com/)
+[![Databricks Dashboards](https://img.shields.io/badge/Databricks Dashboards-F2C81?style=for-the-badge&logo=databricks&logoColor=black)](https://databricks.com/)
 [![CI/CD](https://img.shields.io/badge/CI%2FCD-GitHub_Actions-2088FF?style=for-the-badge&logo=github-actions&logoColor=white)](https://github.com/features/actions)
 
 *Pipeline automatizado de datos para análisis de ventas y garantias de Apple Stores con arquitectura de tres capas y despliegue continuo*
@@ -26,7 +26,7 @@ Pipeline ETL enterprise-grade que transforma datos crudos de ventas y garantias 
 - 🏗️ **Arquitectura Medallion** - Separación clara de capas Bronze → Silver → Gold
 - 📊 **Modelo Dimensional** - Star Schema optimizado para análisis de negocio
 - 🚀 **CI/CD Integrado** - Deploy automático en cada push a master
-- 📈 **Power BI Ready** - Conexión directa con SQL Warehouse
+- 📈 **Databricks Dashboards** - Visualización
 - ⚡ **Delta Lake** - ACID transactions y time travel capabilities
 - 🔔 **Monitoreo** - Notificaciones automáticas y logs detallados
 
@@ -45,7 +45,7 @@ Pipeline ETL enterprise-grade que transforma datos crudos de ventas y garantias 
     ↓
 🥇 Gold Layer (Agregaciones de Negocio)
     ↓
-📊 Power BI (Visualización)
+📊 Databricks Dashboards (Visualización)
 ```
 
 ![Texto descriptivo](Arquitectura.png)
@@ -84,7 +84,7 @@ Pipeline ETL enterprise-grade que transforma datos crudos de ventas y garantias 
 - `product_sales`
 - `store_sales`
 - `store_warranty_status`
-- `waranty_products`
+- `warranty_products`
 
 **Características**:
 - ✅ Star Schema
@@ -132,10 +132,13 @@ etl-apple/
 │   ├── 🐍 transform_warranty.py        # Silver Layer
 │   └── 🐍 load_sales.py                # Gold Layer
 │   └── 🐍 load_warranty.py             # Gold Layer
-├── 📂 security/
+├── 📂 scrips/
 |   ├── 🐍 Enviroment preparation.py    # Create Schema, Tables, External location
 ├── 📂 security/
 |   ├── 🐍 Permissions.py               # Sql Grant
+├── 📂 reversion/
+|   ├── 🐍 revoke.py               # Revoke permissions
+├── 📂 dashboards/                 # Databricks Dashboards 
 └── 📄 README.md
 ```
 
@@ -152,7 +155,7 @@ etl-apple/
 | ![PySpark](https://img.shields.io/badge/PySpark-E25A1C?style=flat-square&logo=apache-spark&logoColor=white) | Framework de transformación de datos |
 | ![ADLS](https://img.shields.io/badge/ADLS_Gen2-0078D4?style=flat-square&logo=microsoft-azure&logoColor=white) | Data Lake para almacenamiento persistente |
 | ![GitHub Actions](https://img.shields.io/badge/GitHub_Actions-2088FF?style=flat-square&logo=github-actions&logoColor=white) | Automatización CI/CD |
-| ![Power BI](https://img.shields.io/badge/Power_BI-F2C811?style=flat-square&logo=power-bi&logoColor=black) | Business Intelligence y visualización |
+| ![Databricks Dashboards](https://img.shields.io/badge/Databricks Dashboards-F2C81?style=for-the-badge&logo=databricks&logoColor=black) |  Visualización |
 
 </div>
 
@@ -283,10 +286,7 @@ Workflow: Deploy ETL Apple Sales And Warranty
 ---
 
 ## 📈 Dashboards
-### Apple Sales
-### Apple Warranty
-
-
+https://github.com/guaru/project-databricks/tree/dev/dashboards
 
 ## 🔍 Monitoreo
 
